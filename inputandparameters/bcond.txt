@@ -1,0 +1,4 @@
+# flex boundary conditions, bc3rd = false; u(0), u'(0), u'(L), u(L)
+0 0 0 0
+# flex boundary conditions, bc3rd = true; u''(0), u'''(0), u'(l), u(L)
+0 -1.5d13 0 0
