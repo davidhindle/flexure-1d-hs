@@ -1,6 +1,6 @@
 ## flex-hs
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4571576.svg)](https://doi.org/10.5281/zenodo.4571576)
+[![DOI](https://zenodo.org/badge/351581782.svg)](https://zenodo.org/badge/latestdoi/351581782)
 
 ## Introduction
 
@@ -88,9 +88,9 @@ Output is meant to be visualised directly by GMT v6, with the script plotflex6.g
 
 This notebook has been published at Zenodo. Please cite the following reference if you publish any work that uses this notebook:
 
-Hindle, D. (2021). flexure-1d-hs Zenodo. [https://doi.org/10.5281/zenodo.4571576](https://doi.org/10.5281/zenodo.4571576)
+Hindle, D. (2021). flexure-1d-hs Zenodo. [https://doi.org/10.5281/zenodo.351581782](https://doi.org/10.5281/zenodo.351581782)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4571576.svg)](https://doi.org/10.5281/zenodo.4571576)
+[![DOI](https://zenodo.org/badge/351581782.svg)](https://zenodo.org/badge/latestdoi/351581782)
 
 
 ## License
