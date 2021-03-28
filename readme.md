@@ -55,7 +55,7 @@ the variables in `param.txt` are, in order, on the third line of the file<br/><b
 **pint** - plot interval, INTEGER; the integer number of the increment of nodes between each recorded value of u. Setting to 5 means only every 5th node value of u is recorded.<br/>
 **bc3rd**- boundary condition, LOGICAL; true = 3rd derivative and 2nd derivative boundary conditions are applied at left hand side of model. <br/>
 **comp**- erosion compensation for +ve u, LOGICAL; true = erosion of all areas of +ve u, generating upward force pcrust*g*u <br/><br/>
-`te.txt` - set elastic thickness values at specific nodes. For instance, setting te values from nodes 24999 t0 25001 0.01m, and nodes 25600 25610 to 10m requires two lines in te.txt<br/><br/>
+`te.txt` - set elastic thickness values at specific nodes. For instance, setting te values from nodes 24999 to 25001 0.01m, and nodes 25600 25610 to 10m requires two lines in te.txt<br/><br/>
 `24999 25001 0.01 `<br/>
 `25600 25610 10 ` <br/><br/>
 Every node is initialised in the code to have elastic thickness = **h**, taken from param.txt. Hence, if te.txt is empty, the model will have a constant elastic thickness everywhere, corresponding to the "background" value from param.txt<br/>
