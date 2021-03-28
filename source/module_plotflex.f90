@@ -11,6 +11,7 @@ integer, parameter :: QP = selected_real_kind (32)
 integer :: node,i,j,k,l,istore,check,pint
 real (kind=QP) :: ur(node),uo(node),vd(node),tee(node),t(node),q(node),lf(node)
 real (kind=QP) :: dx,pfill,pcrust,g,plotf
+real (kind=QP), parameter :: eps=0.0001_QP
 character*3 :: code
 
 ! OUTPUT FILES
@@ -69,16 +70,20 @@ check=1
 !  write (16,*) plotf*(i-1), ur(i)-h      ! bottom surface of lithosphere/crust ***as defined by ELASTIC thickness***  u-te.txt
   write (18,'(2(1pe15.5))') plotf*(i-1), uo(i)
 
-  if (t(i).eq.0) then
-    if (ur(i).lt.0) then
-      write (17,'(a)') '>'                  ! fill hachuring
-      write (17,'(1pe15.5,i3)') plotf*(i-1), 0               ! fill hachuring
-      write (17,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pfill*g)    ! fill hachuring where there is no load
-    else 
-      write (23,'(a)') '>'                  ! fill hachuring
-      write (23,'(1pe15.5,i3)') plotf*(i-1), 0               ! fill hachuring
-      write (23,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pcrust*g)    ! fill hachuring where there is no load
+  if (t(i).eq.0) then  
+   if (abs(q(i))>eps) then                     
+    if (ur(i).lt.0) then                    ! no load, basin fill, u -ve
+      write (17,'(a)') '>'                                            ! fill hachuring
+      write (17,'(1pe15.5,i3)') plotf*(i-1), 0                        
+      write (17,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pfill*g)    ! bottom of line given as load force (q) / (fill density*g)
+      
+    else                                    ! no load, erosion, u +ve
+      
+      write (23,'(a)') '>'                                            ! fill hachuring
+      write (23,'(1pe15.5,i3)') plotf*(i-1), 0                        ! bottom of line
+      write (23,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pcrust*g)   ! top of line given as load force (q) / (crust density*g)
     end if
+   end if 
     if (check == 2) then    ! complete the edge of the load - where t(i) eq 0 for first time (check = 2) means you've reached the rhs of the load
       write (15,'(2(1pe15.5))') plotf*(i-2), ur(i-1) ! so plot bottom corner of load at top of plate at node i-1 !!!
       do j=i-2,istore+1,-1    ! write in ur from rhs back to lhs of current load (nodes i-2 to istore+1)
@@ -94,7 +99,7 @@ check=1
     write (17,'(2(1pe15.5))') plotf*(i-1), lf(i)    ! fill hachuring  where there is a load that is below zero
   end if 
   i=i+pint
-  if (i.gt.node) then
+  if (i > node) then
     goto 50
   else
     goto 12
