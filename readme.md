@@ -69,17 +69,6 @@ You can also use pwl_interp.f90 to automatically generate a piecewise, linear in
 Output is meant to be visualised directly by GMT v6, with the script plotflex6.gmt. The important output file is hs_udqp.txt which is the solution u(x) at all nodes, plotted with a kms x scale and u(x) in metres. 
 
 
-
-## Installation
-
-* Download the zip file or [clone](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) the repository.
-* Unzip the file, navigate to the directory and run the minimal example or one of the [Jupyter](https://jupyter.org/) notebooks.
-
-
-
-
-
-
 ## Authors
 **David Hindle**, University of Göttingen, <dhindle-at-gwdg.de>
 
