@@ -40,16 +40,16 @@ The input files for the code are<br/><br/>
 `param.txt` - a file that has grown and grown in size that now contains a bewildering set of inputs, some for controlling the code's default behaviours, and some simply giving the values of parameters for the problem.<br/>
 the variables in `param.txt` are, in order, on the third line of the file<br/><br/>
 **EM** - elastic modulus, Pa; (6.5e10 for continental lithosphere) <br/>
-**h **- "default" elastic thickness, metres;  all nodes are set to this value by default. Subsequently, the value will be changed only at those nodes specified within te.txt <br/>
+**h**- "default" elastic thickness, metres;  all nodes are set to this value by default. Subsequently, the value will be changed only at those nodes specified within te.txt <br/>
 **pm** - mantle density, kgm^3; <br/>
-**pload **- load density, kgm^3; density of user defined load given as a load thickness per node, in load-flex.txt<br/>
-**pfill/pw **- basin fill density, kgm^3; density of material filling basins created by flexure. Setting to 1.d3 is equivalent to water filled basins. Setting to 0, means empty basins. <br/>
+**pload**- load density, kgm^3; density of user defined load given as a load thickness per node, in load-flex.txt<br/>
+**pfill/pw**- basin fill density, kgm^3; density of material filling basins created by flexure. Setting to 1.d3 is equivalent to water filled basins. Setting to 0, means empty basins. <br/>
 **pcrust** - crustal density, kgm^3; density of crust, effectively the density of material eroded from the plate if erosion is switched on.<br/>
 **g** - gravitation, -9.81 ms^-2; THE CODE IS SET TO RUN WITH GRAVITY NEGATIVE!!! DO NOT CHANGE THIS VALUE.<br/>
 **dx** - grid spacing, metres; space between nodes in the model. Effectively determines size of problem domain<br/>
 **v** - poisson's ratio, generally taken to be 0.25;<br/>
 **pu-horiz** - horizontal plate wide, background stress, Nm^-1; a messy parameter to use when elastic thickness varies. Often better to set to 0<br/>
-**iter tol **- tolerance for ending iteration; the absolute difference between succeeding iterations of the value of u(x). When the iteration converges, usually, the change in value between iteration is very small<br/>
+**iter tol**- tolerance for ending iteration; the absolute difference between succeeding iterations of the value of u(x). When the iteration converges, usually, the change in value between iteration is very small<br/>
 **nodes** - number of nodes - INTEGER; number of nodes must be an integer. Together with grid spacing, this determines physical dimension of problem domain.<br/>
 **iswitch** - iteration on or off - LOGICAL; true = iteration is switched on, false = iteration is switched off, and solution is returned prior to iteration with all basins empty<br/>
 **pint** - plot interval, INTEGER; the integer number of the increment of nodes between each recorded value of u. Setting to 5 means only every 5th node value of u is recorded.<br/>
