@@ -53,7 +53,7 @@ the variables in `param.txt` are, in order, on the third line of the file<br/><b
 **nodes** - number of nodes - INTEGER; number of nodes must be an integer. Together with grid spacing, this determines physical dimension of problem domain.<br/>
 **iswitch** - iteration on or off - LOGICAL; true = iteration is switched on, false = iteration is switched off, and solution is returned prior to iteration with all basins empty<br/>
 **pint** - plot interval, INTEGER; the integer number of the increment of nodes between each recorded value of u. Setting to 5 means only every 5th node value of u is recorded.<br/>
-**bc3rd **- boundary condition, LOGICAL; true = 3rd derivative and 2nd derivative boundary conditions are applied at left hand side of model. <br/>
+**bc3rd**- boundary condition, LOGICAL; true = 3rd derivative and 2nd derivative boundary conditions are applied at left hand side of model. <br/>
 **comp**- erosion compensation for +ve u, LOGICAL; true = erosion of all areas of +ve u, generating upward force pcrust*g*u <br/><br/>
 `te.txt` - set elastic thickness values at specific nodes. For instance, setting te values from nodes 24999 t0 25001 0.01m, and nodes 25600 25610 to 10m requires two lines in te.txt<br/><br/>
 `24999 25001 0.01 `<br/>
