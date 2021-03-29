@@ -70,10 +70,11 @@ check=1
 !  write (16,*) plotf*(i-1), ur(i)-h      ! bottom surface of lithosphere/crust ***as defined by ELASTIC thickness***  u-te.txt
   write (18,'(2(1pe15.5))') plotf*(i-1), uo(i)
 
-  if (t(i).eq.0) then  
-   if (abs(q(i))>eps) then                     
+  if (t(i).eq.0) then                       ! t(i) is applied load thickness. There should be infill or erosion only where there is no applied load. 
+                                            ! This might actually be changed for additional modelling scenarios. Modifications would be made to flex-hs.f90 first, however.
+   if (abs(q(i))>eps) then                  ! q(i) is basin fill/erosion generated force. If pcrust or pfill = 0, then q(i) = 0, hence this test prevents division by zero    
     if (ur(i).lt.0) then                    ! no load, basin fill, u -ve
-      write (17,'(a)') '>'                                            ! fill hachuring
+      write (17,'(a)') '>'                                            ! fill hachuring 
       write (17,'(1pe15.5,i3)') plotf*(i-1), 0                        
       write (17,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pfill*g)    ! bottom of line given as load force (q) / (fill density*g)
       
