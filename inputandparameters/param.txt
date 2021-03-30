@@ -1,3 +1,20 @@
 # parameters for flexure code: in order, 
-# EM,    h - elas thick.(m),   pmant(kgm3),    pload,   pfill/pw, pcrust,   g    ,  dx -grid space(m), v-poisson, pu-horiz. push,  iter. tol.,   #nodes,   iswitch,  pint-plotinterval,    bc3rd,      comp
-6.5d10       20.d3              3.3d3         2.7d3     2.3d3    2.7d3   -9.81d0        1.0d2            0.25d0     0.d0              1.d0         50001     true        1               false       true
+# 
+ 6.5d10     EM
+ 20.d3      h - elas thick.(m)
+ 3.3d3      pmant(kgm3)
+ 2.7d3      pload
+ 1.d3       pfill/pw
+ 1.d3       pcrust
+ -9.81d0    g  
+ 1.0d2      dx -grid space(m)
+ 0.25d0     v-poisson
+ 0.d0       pu-horiz. push
+ 1.d0       iter. tol.
+ 50001      #nodes
+ true       iswitch
+ 1          pint-plotinterval
+ false      bc3rd
+ true       comp
+ 1000       max.  number of iterations
+

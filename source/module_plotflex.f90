@@ -51,8 +51,8 @@ check=1
     write (19,'(2(1pe15.5))') plotf*(i-1), abs(vd(i)*(ur(i-1)-2*ur(i)+ur(i+1)) / dx**2)
     write (21,'(2(1pe15.5))') plotf*(i-1), abs((ur(i-1)-2*ur(i)+ur(i+1)) / dx**2)
   else
-    write (19,'(2(1pe15.5))') plotf*(i-1), 0._QP
-    write (21,'(2(1pe15.5))') plotf*(i-1), 0._QP
+    write (19,'(2(1pe15.5))') plotf*(i-1), 0.0
+    write (21,'(2(1pe15.5))') plotf*(i-1), 0.0
   end if
   write (22,'(2(1pe15.5))') plotf*(i-1), tee(i)
 
@@ -70,19 +70,19 @@ check=1
 !  write (16,*) plotf*(i-1), ur(i)-h      ! bottom surface of lithosphere/crust ***as defined by ELASTIC thickness***  u-te.txt
   write (18,'(2(1pe15.5))') plotf*(i-1), uo(i)
 
-  if (t(i).eq.0) then                       ! t(i) is applied load thickness. There should be infill or erosion only where there is no applied load. 
+  if (t(i) .eq. 0.0_QP) then                ! t(i) is applied load thickness. There should be infill or erosion only where there is no applied load. 
                                             ! This might actually be changed for additional modelling scenarios. Modifications would be made to flex-hs.f90 first, however.
    if (abs(q(i))>eps) then                  ! q(i) is basin fill/erosion generated force. If pcrust or pfill = 0, then q(i) = 0, hence this test prevents division by zero    
-    if (ur(i).lt.0) then                    ! no load, basin fill, u -ve
+    if (ur(i) .lt. 0.0_QP) then               ! no load, basin fill, u -ve
       write (17,'(a)') '>'                                            ! fill hachuring 
       write (17,'(1pe15.5,i3)') plotf*(i-1), 0                        
-      write (17,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pfill*g)    ! bottom of line given as load force (q) / (fill density*g)
+      write (17,'(2(1pe15.5))') plotf*(i-1), -q(i)/(pfill*g)    ! bottom of line given as load force (q) / (fill density*g)
       
     else                                    ! no load, erosion, u +ve
       
       write (23,'(a)') '>'                                            ! fill hachuring
       write (23,'(1pe15.5,i3)') plotf*(i-1), 0                        ! bottom of line
-      write (23,'(2(1pe15.5))') plotf*(i-1), -1._QP*q(i)/(pcrust*g)   ! top of line given as load force (q) / (crust density*g)
+      write (23,'(2(1pe15.5))') plotf*(i-1), -q(i)/(pcrust*g)   ! top of line given as load force (q) / (crust density*g)
     end if
    end if 
     if (check == 2) then    ! complete the edge of the load - where t(i) eq 0 for first time (check = 2) means you've reached the rhs of the load
@@ -94,7 +94,7 @@ check=1
     end if
 
   end if
-  if (lf(i).lt.0) then
+  if (lf(i) .lt. 0.0_QP) then
     write (17,'(a)') '>'
     write (17,'(1pe15.5,i3)') plotf*(i-1), 0               ! fill hachuring
     write (17,'(2(1pe15.5))') plotf*(i-1), lf(i)    ! fill hachuring  where there is a load that is below zero

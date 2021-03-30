@@ -9,8 +9,8 @@ LD = ${MYFOR}
 
 # flags for compilation
 CFLAGS = -O3 -C -fdollar-ok -fbounds-check -fsignaling-nans -ffpe-trap=invalid,zero,overflow
-#CFLAGS = -O0 -C -fdollar-ok -fopenmp -fbounds-check -fsignaling-nans -ffpe-trap=invalid,zero,overflow
-#CFLAGS = -O0 -C -Wall -fdollar-ok -fopenmp -fbounds-check -fsignaling-nans -ffpe-trap=invalid,zero,overflow
+#CFLAGS = -O0 -C -fdollar-ok -fbounds-check -fsignaling-nans -ffpe-trap=invalid,zero,overflow
+#CFLAGS = -O0 -C -Wall -fdollar-ok -fbounds-check -fsignaling-nans -ffpe-trap=invalid,zero,overflow
 
 # debug flag
 DFLAGS = -g
@@ -20,7 +20,7 @@ LDFLAGS =
 
 
 #suffixes
-.SUFFIXES: .o .f90 .f
+.SUFFIXES: .o .f90
 
 # ----------------------------
 # sources

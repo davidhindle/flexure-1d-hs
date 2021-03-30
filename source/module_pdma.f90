@@ -65,7 +65,7 @@ real (kind=QP) :: p(n),q(n),r(n)
 real (kind=QP) :: a(n),b(n),c(n),d(n),e(n),f(n),u(n)
 real (kind=QP) :: bp(n),cp(n),dp(n),ep(n)
 real (kind=QP) :: edpp(n),edpq(n),edpr(n),denom(n)
-double precision, parameter :: zero=0._QP
+real (kind=QP), parameter :: zero=0.0_QP
 integer :: i,j,k,l,n
 
 !initialise
@@ -74,10 +74,10 @@ p=zero; q=zero; r=zero; u=zero
 
 ! rearrange linear system as described in Sebben
 do i = 1,n
-  bp(i)=-1._QP*b(i)
-  cp(i)=-1._QP*c(i)
-  dp(i)=-1._QP*d(i)
-  ep(i)=-1._QP*e(i)
+  bp(i)=-b(i)
+  cp(i)=-c(i)
+  dp(i)=-d(i)
+  ep(i)=-e(i)
 end do
 
 !set known iteration variable values for i=1, i=2, (p,q,r)
@@ -120,6 +120,7 @@ END subroutine penta
 
 !---------------------------------------------------------------------------------------------
 ! subroutine to multiply a pentadiagonal matrix and a vector (only elements of rows i=3, node-2)
+! u = a*f
 
 subroutine pdmm(n,a1,am1,am2,ap1,ap2,f,u)
 
@@ -129,8 +130,7 @@ integer, parameter :: QP = selected_real_kind (32)
 
 real (kind=QP) :: a1(n),am1(n),am2(n),ap1(n),ap2(n),f(n),u(n)
 integer :: i,j,k,l,n
-u(1:n)=0._QP
-f(1:n)=0._QP
+u(1:n)=0.0_QP
 
 do i=3,n-2
   u(i) = am2(i)*f(i-2)+am1(i)*f(i-1)+a1(i)*f(i)+ap1(i)*f(i+1)+ap2(i)*f(i+2)     

@@ -58,10 +58,12 @@ real (kind=QP) :: EM, h, v, k, dx, pm, pfill, pload, pcrust, g, pup, tol ! norma
 real (kind=QP) ::  te, plotf, th, udiff
 real (kind=QP) :: bc1, bc2, bc3, bc4  ! 4 boundary condition variables
 real (kind=QP) :: depth, pi,dum1,dum2,dum3
-double precision, parameter :: zero=0.0_QP
+real (kind=QP), parameter :: zero=0.0_QP
 integer :: i,j,l,m,n,r,iter,check,istore,il,ir,pint
 character*3 :: code
 logical :: iswitch,bc3rd,comp
+
+integer :: iter_max
 
 code='hs3'
 ! open input AND output files
@@ -78,7 +80,24 @@ open (13, file='param.txt')     ! model parameters file
 open (13, file='param.txt')     ! model parameters file
 read (13,*)
 read (13,*)
-read (13,*) EM, h, pm, pload, pfill, pcrust, g, dx, v, pup, tol, node, iswitch, pint, bc3rd, comp
+read (13,*) EM
+read (13,*) h
+read (13,*) pm
+read (13,*) pload
+read (13,*) pfill
+read (13,*) pcrust
+read (13,*) g
+read (13,*) dx
+read (13,*) v
+read (13,*) pup
+read (13,*) tol
+read (13,*) node
+read (13,*) iswitch
+read (13,*) pint
+read (13,*) bc3rd
+read (13,*) comp
+read (13,*) iter_max
+close(13)
 
 ! dynamic allocation of arrays, size given as parameter node in param.txt
 
@@ -115,6 +134,7 @@ l = 0
 goto 30
 
 70 continue
+close(10)
 
 ! calculate the value of DD(i) - up to this point, tee(i) carries correct value for elastic thickness
 vd(1:node)=(EM*tee(1:node)**3)/(12.0_QP*(1.0_QP-v**2))
@@ -136,6 +156,7 @@ goto 33
 
 ! read boundary conditions from bcond.txt
 99  continue
+close(11)
 
 if (bc3rd .eqv. .true.) then 
   read (12,*)
@@ -143,6 +164,7 @@ if (bc3rd .eqv. .true.) then
 end if
 read (12,*)     
 read (12,*) bc1, bc2, bc3, bc4
+close(12)
 q(1)=bc1
 q(2)=bc2
 q(node-1)=bc3
@@ -153,16 +175,14 @@ if (bc3rd .eqv. .true.) then
   print *, 'q(2) = ', q(2) 
 end if           
 
-100  continue 
-
 ! 5 diagonals of matrix
 do i=3,node-2
-  a1(i) = (1._QP/dx**4)*(vd(i+1)+4._QP*vd(i)+vd(i-1)) -k - 2._QP*pu(i)/dx**2   ! i
-  !a1(i) = (1._QP/dx**4)*(vd(i+1)+4._QP*vd(i)+vd(i-1)) -k    ! i
-  ap1(i) = (-2._QP/dx**4.)*(vd(i+1)+vd(i)) + pu(i)/dx**2                   ! i+1  ur diag
-  ap2(i) = (1._QP/dx**4)*vd(i+1)                                         ! i+2    ur diag
-  am1(i) = (-2._QP/dx**4)*(vd(i)+vd(i-1)) + pu(i)/dx**2                    ! i-1  lr diag
-  am2(i) = (1._QP/dx**4)*vd(i-1)                                         ! i-2    lr diag
+  a1(i) = (1.0_QP/dx**4)*(vd(i+1)+4.0_QP*vd(i)+vd(i-1)) -k - 2.0_QP*pu(i)/dx**2   ! i
+  !a1(i) = (1.0_QP/dx**4)*(vd(i+1)+4._QP*vd(i)+vd(i-1)) -k    ! i
+  ap1(i) = (-2.0_QP/dx**4)*(vd(i+1)+vd(i)) + pu(i)/dx**2                   ! i+1  ur diag
+  ap2(i) = (1.0_QP/dx**4)*vd(i+1)                                         ! i+2    ur diag
+  am1(i) = (-2.0_QP/dx**4)*(vd(i)+vd(i-1)) + pu(i)/dx**2                    ! i-1  lr diag
+  am2(i) = (1.0_QP/dx**4)*vd(i-1)                                         ! i-2    lr diag
 end do
 
 !   boundary conditions
@@ -171,74 +191,74 @@ if (bc3rd .eqv. .true.) then
 
 !   u''(0)
 
-  a1(1)=1._QP/dx**2
-  ap1(1)=-2._QP/dx**2
-  ap2(1)=1._QP/dx**2
+  a1(1)=1.0_QP/dx**2
+  ap1(1)=-2.0_QP/dx**2
+  ap2(1)=1.0_QP/dx**2
 
 !   u'''(0)
 
-  am1(2)=-1._QP/dx**3
-  a1(2)=3._QP/dx**3
-  ap1(2)=-3._QP/dx**3
-  ap2(2)=1._QP/dx**3
+  am1(2)=-1.0_QP/dx**3
+  a1(2)=3.0_QP/dx**3
+  ap1(2)=-3.0_QP/dx**3
+  ap2(2)=1.0_QP/dx**3
 
 else
- print *, 'normal bc '
+  print *, 'normal bc '
 
 !   u(0)  
 
- a1(1)=1._QP
+  a1(1)=1.0_QP
 
 !   u'(0)   forward diff, 2nd order
 
   am1(2)=-1.5_QP/(1._QP*dx)
-  a1(2)=2._QP/(1._QP*dx)
+  a1(2)=2.0_QP/(1._QP*dx)
   ap1(2)=-0.5_QP/(1._QP*dx)  
-!  am1(2)=-1._QP/dx    ! ur diag
-!  a1(2)=1._QP/dx
+!  am1(2)=-1.0_QP/dx    ! ur diag
+!  a1(2)=1.0_QP/dx
 
 end if
 
 !   u'(L)   backward diff, 2nd order
 
 ap1(node-1)=1.5_QP/(1._QP*dx)
-a1(node-1)=-2._QP/(1._QP*dx)
+a1(node-1)=-2.0_QP/(1._QP*dx)
 am1(node-1)=0.5_QP/(1._QP*dx)       
-!a1(node-1)=-1._QP/dx
-!ap1(node-1)=1._QP/dx   ! lr diag
+!a1(node-1)=-1.0_QP/dx
+!ap1(node-1)=1.0_QP/dx   ! lr diag
 
 !   u(L) 
 
-a1(node)=1._QP
+a1(node)=1.0_QP
 
 print *, am1(2),a1(2),ap1(2) 
 print *, ap1(node-1),a1(node-1),am1(node-1)
 print *, q(2),q(node-1)
 
 if (iswitch .eqv. .false.) then 
-call penta(node,a1,ap1,ap2,am1,am2,q,ur1)      ! solution gets stored in ur1 - should always be u(r+1)
-goto 199
+  call penta(node,a1,ap1,ap2,am1,am2,q,ur1)      ! solution gets stored in ur1 - should always be u(r+1)
+  goto 199
 end if       
 
 ! intitialise udiff (iteration convergence)
-udiff=tol+1._QP
+udiff=tol+1.0_QP
 iter=1
 
-do while (udiff>tol)
+iterdo: do
 
-  udiff=0._QP
+  udiff=zero
 
 ! calculate A-1 q_r = u_r+1 - and iterate
 
   call penta(node,a1,ap1,ap2,am1,am2,q,ur1)      ! solution gets stored in ur1 - should always be u(r+1)
   if (iter == 1) then
-    uo(1:node)=ur1(1:node)
+    uo = ur1
   end if
   do i=1,node                         ! caclulate difference in solutions
     udiff=udiff + ABS(ur1(i)-ur(i))
   end do
   print *, udiff
-  ur(1 : node) = ur1(1 : node)        ! store u(r+1) to u(r) for next step
+  ur = ur1        ! store u(r+1) to u(r) for next step
 
 ! calculate the new load to add for next iteration step
 ! based on newest solution ur1 (u(r+1) 
@@ -246,18 +266,18 @@ do while (udiff>tol)
 
   i=1 
   do while (i.le.node) 
-    if (ur1(i) .lt. 0._QP) then
-      q(i)=-1._QP*ur1(i)*g*pfill  ! fill value when the flexed plate is below zero - use ur1 as depth below zero and fill density
+    if (ur1(i) .lt. zero) then
+      q(i)=-ur1(i)*g*pfill  ! fill value when the flexed plate is below zero - use ur1 as depth below zero and fill density
     else
-      q(i)=0._QP                  ! sets remainder of q(i) to zero - because q(i) needs resetting because it was written over by the solution
+      q(i)=zero                  ! sets remainder of q(i) to zero - because q(i) needs resetting because it was written over by the solution
     end if
 
     if (comp .eqv. .true.) then
-      if (ur1(i).gt.0._QP) then
-        q(i)=-1._QP*ur1(i)*g*pcrust  ! fill value when the flexed plate is below zero - use ur1 as depth below zero and fill density
+      if (ur1(i) .gt. zero) then
+        q(i)=-ur1(i)*g*pcrust  ! fill value when the flexed plate is below zero - use ur1 as depth below zero and fill density
 !      else
 
-!      q(i)=0._QP                  ! sets remainder of q(i) to zero - because q(i) needs resetting because it was written over by the solution
+!      q(i)=zero                  ! sets remainder of q(i) to zero - because q(i) needs resetting because it was written over by the solution
       end if
     end if 
     i=i+1
@@ -266,13 +286,13 @@ do while (udiff>tol)
 ! add back in the original LOAD! 
 
   do i=1,node
-    if (t(i).ne.0) then           ! checks places where there is load (t(i) ne 0)
+    if (t(i) .ne. zero) then           ! checks places where there is load (t(i) ne 0)
       lf(i)=ur1(i)+abs(t(i))            ! lf is a variable to test if sum of original load and deflected plate is > or < 0 
       q(i)=t(i)*g*pload
-      if (lf(i).lt.0) then         ! if lf < 0 then you need to add fill above the load whose top is < 0
+      if (lf(i) .lt. zero) then         ! if lf < 0 then you need to add fill above the load whose top is < 0
         q(i)=q(i)-lf(i)*pfill*g      ! adds the additional fill above the load 
       end if 
-     end if
+    end if
 
 !     if (tee(i).ne.h) then
 !      q(i)=t(i)*g*pload
@@ -287,38 +307,31 @@ do while (udiff>tol)
   q(node)=bc4
 
   if (bc3rd .eqv. .true.) then
-    q(2)=0.5*bc2/vd(2)
+    q(2)=0.5_QP*bc2/vd(2)
     print *, 'q(2) = ', q(2) 
   end if         
 
   print *, iter, udiff
 
-  iter=iter+1
-end do
+  if (udiff < tol) exit iterdo
 
-ur(1 : node) = ur1(1 : node)        ! store u(r+1) to u(r) for next step
+  iter=iter+1
+  if (iter .gt. iter_max) then
+    write(*,'(a,i5,a,i5)') 'fixed point iterations did not converge',iter,' > ',iter_max
+    exit  iterdo
+  end if
+end do iterdo
+
+ur = ur1        ! store u(r+1) to u(r) for next step
 
 199  continue
 
 call plot(node,ur1,uo,vd,tee,t,q,lf,dx,pfill,pcrust,g,pint,code)
 
- 50    continue     
+50    continue     
 
- print *, MINVAL(ur1)
- print *, ur1(minloc(ur1)-1)
-
-close(10)
-close(11)
-close(12)
-close(13)
-close(14)
-close(15)
-close(16)
-close(17)
-close(18)
-close(19)
-close(20)
-close(21)
+print *, MINVAL(ur1)
+print *, ur1(minloc(ur1)-1)
 
 end
 
